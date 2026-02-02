@@ -4,6 +4,7 @@ const app = express();
 require("dotenv").config();
 
 const { Student } = require("./models/students.model");
+const Teacher = require("./models/teachers.model");
 const { initializeDatabase } = require("./db/db.connect");
 
 app.use(cors());
@@ -81,6 +82,63 @@ app.delete("/students/:id", async (req, res) => {
     });
   } catch (error) {
     console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.get("/teachers", async (req, res) => {
+  try {
+    const teachers = await Teacher.find();
+    res.json(teachers);
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.post("/teachers", async (req, res) => {
+  try {
+    const teacher = await Teacher.create(req.body);
+    res.status(201).json(teacher);
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.put("/teachers/:id", async (req, res) => {
+  const teacherId = req.params.id;
+  const updatedData = req.body;
+  try {
+    const updatedTeacher = await Teacher.findByIdAndUpdate(
+      teacherId,
+      updatedData,
+      { new: true },
+    );
+
+    if (!updatedTeacher) {
+      return res.status(404).json({ message: "Not found" });
+    }
+
+    res.status(200).json(updatedTeacher);
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.delete("/teachers/:id", async (req, res) => {
+  const teacherId = req.params.id;
+
+  try {
+    const deletedTeacher = await Teacher.findByIdAndDelete(teacherId);
+
+    if (!deletedTeacher) {
+      return res.status(404).json({ message: "Not found" });
+    }
+
+    res.status(200).json({
+      message: "Teacher deleted successfully!",
+      deletedTeacher: deletedTeacher,
+    });
+  } catch (error) {
     res.status(500).json({ error: "Internal server error" });
   }
 });
