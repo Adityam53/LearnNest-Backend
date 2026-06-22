@@ -21,8 +21,7 @@ const studentSchema = new mongoose.Schema({
     max: 100,
     required: true,
   },
-  grade: String,
-  required: true,
+  grade: { type: String, required: true },
 });
 
 const Student = mongoose.model("Student", studentSchema);

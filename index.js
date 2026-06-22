@@ -7,11 +7,7 @@ const { Student } = require("./models/students.model");
 const Teacher = require("./models/teachers.model");
 const { initializeDatabase } = require("./db/db.connect");
 
-app.use(
-  cors({
-    origin: ["http://localhost:5173", "https://lern-nest.vercel.app"],
-  }),
-);
+app.use(cors());
 app.use(express.json());
 
 initializeDatabase();
