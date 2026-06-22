@@ -52,7 +52,7 @@ app.put("/students/:id", async (req, res) => {
     const updatedStudent = await Student.findByIdAndUpdate(
       studentId,
       updatedStudentData,
-      { new: true },
+      { new: true, runValidators: true },
     );
 
     if (!updatedStudent) {
@@ -111,7 +111,7 @@ app.put("/teachers/:id", async (req, res) => {
     const updatedTeacher = await Teacher.findByIdAndUpdate(
       teacherId,
       updatedData,
-      { new: true },
+      { new: true, runValidators: true },
     );
 
     if (!updatedTeacher) {
